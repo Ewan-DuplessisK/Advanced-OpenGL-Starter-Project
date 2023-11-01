@@ -68,10 +68,12 @@ int main(int argc, char* argv[]){
 	//Describe the shape by its vertices
 
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		// positions             // colors
+			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
 	};
+
 
 	//Create an ID to be given at object generation
 	unsigned int vbo;
@@ -80,9 +82,9 @@ int main(int argc, char* argv[]){
 	//Pass how many buffers should be created and the reference of the ID to get the value set
 	glGenBuffers(1, &vbo);
 
-	string vs = LoadShader("simpleVertex.shader");
+	string vs = LoadShader("notSimpleVertex.shader");
 	const char* vertexShaderSource = vs.c_str();
-	string fs = LoadShader("simpleFragment.shader");
+	string fs = LoadShader("notSimpleFragment.shader");
 	const char* fragmentShaderSource = fs.c_str();
 
 
@@ -131,9 +133,13 @@ int main(int argc, char* argv[]){
 	//Finally send the vertices array in the array buffer 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//Enable my vertex attrib array number 0 (we only have one attribute of position)
+	// Position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	// Color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
 
 	
 
@@ -142,13 +148,13 @@ int main(int argc, char* argv[]){
 	bool isRunning = true;
 	while (isRunning) {
 		// Get the time in seconds 
-		float timeValue = (float)SDL_GetTicks() / 500;
+		/*float timeValue = (float)SDL_GetTicks() / 500;
 		float redColor = (sin(timeValue) / 2.0f) + 0.5f;
 		float greenColor = (sin(timeValue+0.5f) / 2.0f) + 0.5f;
 		float blueColor = (sin(timeValue + 4.0f) / 2.0f) + 0.5f;
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
 		glUseProgram(shaderProgram);
-		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);
+		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
 
 		// Inputs
 		SDL_Event event;
