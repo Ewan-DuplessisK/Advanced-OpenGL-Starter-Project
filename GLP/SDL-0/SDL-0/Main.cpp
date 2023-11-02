@@ -127,9 +127,14 @@ int main(int argc, char* argv[]){
 	unsigned int vao;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-
-
 	//Binds the buffer linked to this ID to the vertex array buffer to be rendered. Put 0 instead of vbo to reset the value.
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	//https://community.khronos.org/t/understanding-vaos-vbos-and-drawing-two-objects/72778/2
+
+	unsigned int vao2;
+	glGenVertexArrays(1, &vao2);
+	glBindVertexArray(vao2);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	//Finally send the vertices array in the array buffer 
@@ -163,6 +168,7 @@ int main(int argc, char* argv[]){
 		float offsetZ = (sin(timeValue) / 2.0f)+0.5f;
 		glUseProgram(shaderProgram);
 		glUniform3f(offset, offsetX,offsetY,offsetZ);*/
+
 
 		// Inputs
 		SDL_Event event;
