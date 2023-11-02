@@ -148,13 +148,19 @@ int main(int argc, char* argv[]){
 	bool isRunning = true;
 	while (isRunning) {
 		// Get the time in seconds 
-		/*float timeValue = (float)SDL_GetTicks() / 500;
-		float redColor = (sin(timeValue) / 2.0f) + 0.5f;
+		float timeValue = (float)SDL_GetTicks() / 500;
+		/*float redColor = (sin(timeValue) / 2.0f) + 0.5f;
 		float greenColor = (sin(timeValue+0.5f) / 2.0f) + 0.5f;
 		float blueColor = (sin(timeValue + 4.0f) / 2.0f) + 0.5f;
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
+		int offset = glGetUniformLocation(shaderProgram, "offset");
+		float offsetX = (sin(timeValue) / 2.0f);
+		float offsetY = (sin(timeValue) / 2.0f)+0.3f;
+		float offsetZ = (sin(timeValue) / 2.0f)+0.5f;
+		glUseProgram(shaderProgram);
+		glUniform3f(offset, offsetX,offsetY,offsetZ);
 
 		// Inputs
 		SDL_Event event;
