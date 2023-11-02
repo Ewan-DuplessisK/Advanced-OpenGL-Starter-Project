@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
 	///////////SETTING UP SDL/////////////
 	//Create a simple window
 	int width = 400;
-	int height = 300;
+	int height = 400;
 	unsigned int center = SDL_WINDOWPOS_CENTERED;
 	SDL_Window* Window = SDL_CreateWindow("My window", center, center, width, height, SDL_WINDOW_OPENGL);
 	//SDL_WINDOW_OPENGL is a u32 flag !
@@ -68,10 +68,12 @@ int main(int argc, char* argv[]){
 	//Describe the shape by its vertices
 
 	float vertices[] = {
-		// positions             // colors
-			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
+		// positions
+			 -0.5f, 1.0f, 0.0f,
+			-1.0f, 0.0f, 0.0f,
+			 0.0f,  -1.0f, 0.0f,
+			 1.0f, 0.0f, 0.0f,
+			 0.5f, 1.0f, 0.0f
 	};
 
 
@@ -82,9 +84,9 @@ int main(int argc, char* argv[]){
 	//Pass how many buffers should be created and the reference of the ID to get the value set
 	glGenBuffers(1, &vbo);
 
-	string vs = LoadShader("notSimpleVertex.shader");
+	string vs = LoadShader("foxVertex.shader");
 	const char* vertexShaderSource = vs.c_str();
-	string fs = LoadShader("notSimpleFragment.shader");
+	string fs = LoadShader("foxFragment.shader");
 	const char* fragmentShaderSource = fs.c_str();
 
 
@@ -134,11 +136,11 @@ int main(int argc, char* argv[]){
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// Color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	/*glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);*/
 
 
 	
@@ -155,12 +157,12 @@ int main(int argc, char* argv[]){
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
-		int offset = glGetUniformLocation(shaderProgram, "offset");
+		/*int offset = glGetUniformLocation(shaderProgram, "offset");
 		float offsetX = (sin(timeValue) / 2.0f);
 		float offsetY = (sin(timeValue) / 2.0f)+0.3f;
 		float offsetZ = (sin(timeValue) / 2.0f)+0.5f;
 		glUseProgram(shaderProgram);
-		glUniform3f(offset, offsetX,offsetY,offsetZ);
+		glUniform3f(offset, offsetX,offsetY,offsetZ);*/
 
 		// Inputs
 		SDL_Event event;
@@ -182,7 +184,7 @@ int main(int argc, char* argv[]){
 
 		//OMG WE FINALLY DRAW ! We use the GL_TRIANGLES primitive type
 		//We draw from vertex 0 and we will be drawing 3 vertices
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
 	// Quit

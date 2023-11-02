@@ -24,5 +24,7 @@
     <None Include="simpleFragment.shader" />
     <None Include="notSimpleVertex.shader" />
     <None Include="notSimpleFragment.shader" />
+    <None Include="foxVertex.shader" />
+    <None Include="foxFragment.shader" />
   </ItemGroup>
 </Project>
