@@ -75,6 +75,11 @@ int main(int argc, char* argv[]){
 			 1.0f, 0.0f, 0.0f,
 			 0.5f, 1.0f, 0.0f
 	};
+	float verticesColor[] = {
+		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		1.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f,  -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	};
 
 
 	//Create an ID to be given at object generation
@@ -82,7 +87,7 @@ int main(int argc, char* argv[]){
 
 
 	//Pass how many buffers should be created and the reference of the ID to get the value set
-	glGenBuffers(1, &vbo);
+	//glGenBuffers(1, &vbo);
 
 	string vs = LoadShader("foxVertex.shader");
 	const char* vertexShaderSource = vs.c_str();
@@ -127,22 +132,36 @@ int main(int argc, char* argv[]){
 	unsigned int vao;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
+	glGenBuffers(1, &vbo);
 	//Binds the buffer linked to this ID to the vertex array buffer to be rendered. Put 0 instead of vbo to reset the value.
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//https://community.khronos.org/t/understanding-vaos-vbos-and-drawing-two-objects/72778/2
 
-	unsigned int vao2;
-	glGenVertexArrays(1, &vao2);
-	glBindVertexArray(vao2);
+	unsigned int vaoColor;
+	glGenVertexArrays(1, &vaoColor);
+	glBindVertexArray(vaoColor);
+	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesColor), verticesColor, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
 
 	//Finally send the vertices array in the array buffer 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);*/
 	// Color attribute
 	/*glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);*/
@@ -191,6 +210,10 @@ int main(int argc, char* argv[]){
 		//OMG WE FINALLY DRAW ! We use the GL_TRIANGLES primitive type
 		//We draw from vertex 0 and we will be drawing 3 vertices
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+
+		glBindVertexArray(vaoColor);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 3);
+
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
 	// Quit
