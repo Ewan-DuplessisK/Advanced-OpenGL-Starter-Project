@@ -77,8 +77,8 @@ int main(int argc, char* argv[]){
 	};
 	float verticesColor[] = {
 		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		1.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f,  -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 	};
 
 
@@ -94,9 +94,17 @@ int main(int argc, char* argv[]){
 	string fs = LoadShader("foxFragment.shader");
 	const char* fragmentShaderSource = fs.c_str();
 
+	string vsc = LoadShader("notSimpleVertex.shader");
+	const char* vertexShaderColorSource = vsc.c_str();
+	string fsc = LoadShader("notSimpleFragment.shader");
+	const char* fragmentShaderColorSource = fsc.c_str();
+
 
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+	unsigned int vertexShaderColor;
+	vertexShaderColor = glCreateShader(GL_VERTEX_SHADER);
 
 
 	//now that we have a vertex shader, let’s put the code text inside
@@ -106,6 +114,9 @@ int main(int argc, char* argv[]){
 	//aaaaand… Compile !
 	glCompileShader(vertexShader);
 
+	glShaderSource(vertexShaderColor, 1, &vertexShaderColorSource, NULL);
+	glCompileShader(vertexShaderColor);
+
 
 	//Do the same with the fragment shader !
 	unsigned int fragmentShader;
@@ -113,8 +124,16 @@ int main(int argc, char* argv[]){
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
 
+	unsigned int fragmentShaderColor;
+	fragmentShaderColor = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShaderColor, 1, &fragmentShaderColorSource, NULL);
+	glCompileShader(fragmentShaderColor);
+
 	unsigned int shaderProgram;
 	shaderProgram = glCreateProgram();
+
+	unsigned int shaderProgramColor;
+	shaderProgramColor = glCreateProgram();
 
 
 
@@ -124,6 +143,10 @@ int main(int argc, char* argv[]){
 
 	//and link it 
 	glLinkProgram(shaderProgram);
+
+	glAttachShader(shaderProgramColor, vertexShaderColor);
+	glAttachShader(shaderProgramColor, fragmentShaderColor);
+	glLinkProgram(shaderProgramColor);
 
 	//now that the program is complete, we can use it 
 	glUseProgram(shaderProgram);
@@ -140,7 +163,7 @@ int main(int argc, char* argv[]){
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//https://community.khronos.org/t/understanding-vaos-vbos-and-drawing-two-objects/72778/2
+	glUseProgram(shaderProgramColor);
 
 	unsigned int vaoColor;
 	glGenVertexArrays(1, &vaoColor);
@@ -181,12 +204,12 @@ int main(int argc, char* argv[]){
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
-		/*int offset = glGetUniformLocation(shaderProgram, "offset");
+		int offset = glGetUniformLocation(shaderProgramColor, "offset");
 		float offsetX = (sin(timeValue) / 2.0f);
 		float offsetY = (sin(timeValue) / 2.0f)+0.3f;
 		float offsetZ = (sin(timeValue) / 2.0f)+0.5f;
-		glUseProgram(shaderProgram);
-		glUniform3f(offset, offsetX,offsetY,offsetZ);*/
+		glUseProgram(shaderProgramColor);
+		glUniform3f(offset, offsetX,offsetY,offsetZ);
 
 
 		// Inputs
@@ -211,6 +234,7 @@ int main(int argc, char* argv[]){
 		//We draw from vertex 0 and we will be drawing 3 vertices
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
 
+		glUseProgram(shaderProgramColor);
 		glBindVertexArray(vaoColor);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 3);
 
