@@ -1,0 +1,11 @@
+bars: +/-0.8x -> -0.85 / 0.8; -0.5<=paddle.y<=0.9
+ball: if -0.8 || 0.75 check bar pos, if bar.y-6 <= ball.y <= bar.y -> bounce else score; wall bounce -> -0.85 <= ball.y <= 0.9
+
+speed constant
+xFrameOffset =speed*cos(angle)
+yFrameOffset =speed*sin(angle)
+
+paddle pos == 0.2: ratio=0
+0.2< paddle pos <=0.9: {-75°}<= ratio <0
+-0.5<= paddle pos <0.2: 0< ratio <= {75°}
+
