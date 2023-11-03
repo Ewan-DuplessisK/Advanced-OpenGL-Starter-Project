@@ -111,11 +111,12 @@ int main(int argc, char* argv[]) {
 		-0.375f,-0.05f,0.0f,
 	};
 
+	//paddle shader
 	unsigned int vbo;
-	string vs = LoadShader("foxVertex.shader");
+	string vs = LoadShader("simpleVertex.shader");
 	const char* vertexShaderSource = vs.c_str();
-	string fs = LoadShader("foxFragment.shader");
-	const char* fragmentShaderSource = fs.c_str();
+	string fs = LoadShader("paddleFragment.shader");
+	const char* paddleFragmentSource = fs.c_str();
 
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -123,19 +124,59 @@ int main(int argc, char* argv[]) {
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
 
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
+	unsigned int paddleFragment;
+	paddleFragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(paddleFragment, 1, &paddleFragmentSource, NULL);
+	glCompileShader(paddleFragment);
 
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
+	unsigned int paddleProgram;
+	paddleProgram = glCreateProgram();
 
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	glAttachShader(paddleProgram, vertexShader);
+	glAttachShader(paddleProgram, paddleFragment);
+	glLinkProgram(paddleProgram);
 
-	glUseProgram(shaderProgram);
+	//field shader (same vertex shader)
+	string fs2 = LoadShader("fieldFragment.shader");
+	const char* fieldFragmentSource = fs2.c_str();
+
+	unsigned int fieldFragment;
+	fieldFragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fieldFragment, 1, &fieldFragmentSource, NULL);
+	glCompileShader(fieldFragment);
+
+	unsigned int fieldProgram;
+	fieldProgram = glCreateProgram();
+
+	glAttachShader(fieldProgram, vertexShader);
+	glAttachShader(fieldProgram, fieldFragment);
+	glLinkProgram(fieldProgram);
+
+	//ball shader
+	string vs2 = LoadShader("notSimpleVertex.shader");
+	const char* rgbVertexSource = vs2.c_str();
+	string fs3 = LoadShader("notSFragment.shader");
+	const char* rgbFragmentSource = fs2.c_str();
+
+	unsigned int rgbVertex;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+	glShaderSource(rgbVertex, 1, &rgbVertexSource, NULL);
+	glCompileShader(rgbVertex);
+
+	unsigned int rgbFragment;
+	rgbFragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(rgbFragment, 1, &rgbFragmentSource, NULL);
+	glCompileShader(rgbFragment);
+
+	unsigned int ballProgram;
+	fieldProgram = glCreateProgram();
+
+	glAttachShader(ballProgram, rgbVertex);
+	glAttachShader(ballProgram, rgbFragment);
+	glLinkProgram(ballProgram);
+
+	glUseProgram(paddleProgram);
 	unsigned int vaoL;
 	glGenVertexArrays(1, &vaoL);
 	glBindVertexArray(vaoL);
@@ -156,6 +197,7 @@ int main(int argc, char* argv[]) {
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	glUseProgram(fieldProgram);
 	unsigned int vaoF;
 	glGenVertexArrays(1, &vaoF);
 	glBindVertexArray(vaoF);
@@ -166,6 +208,7 @@ int main(int argc, char* argv[]) {
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	glUseProgram(ballProgram);
 	unsigned int vaoB;
 	glGenVertexArrays(1, &vaoB);
 	glBindVertexArray(vaoB);
@@ -218,14 +261,17 @@ int main(int argc, char* argv[]) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		glUseProgram(shaderProgram);
-
+		glUseProgram(paddleProgram);
 		glBindVertexArray(vaoL);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glBindVertexArray(vaoR);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+		glUseProgram(ballProgram);
 		glBindVertexArray(vaoB);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+		glUseProgram(fieldProgram);
 		glBindVertexArray(vaoF);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);

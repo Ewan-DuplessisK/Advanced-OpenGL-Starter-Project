@@ -5,5 +5,5 @@ in vec4 position;
 
 void main()
 {
-    FragColor=ourColor*position;
+    FragColor=ourColor+position;
 }
