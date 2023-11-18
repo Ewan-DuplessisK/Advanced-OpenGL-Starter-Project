@@ -63,8 +63,6 @@ int main(int argc, char* argv[]) {
 	//0 is our origin, the higher the z, the farther the object
 	glDepthFunc(GL_LESS);
 
-	float paddleLpos = 0.2f;
-
 	float paddleLvertices[]={
 		-0.85f,0.2f,0.0f,
 		-0.8f,0.2f,0.0f,
@@ -226,17 +224,18 @@ int main(int argc, char* argv[]) {
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	
-	float paddleRpos = 0.2f;
-	float ballXpos = 0.25f;
-	float ballYpos = 0.5f;
+    float offsetX=0.0f;
+    float offsetY=0.0f;
+    float angle=180.f;
 
 	bool isRunning = true;
 	while (isRunning) {
 		float timeValue = (float)SDL_GetTicks() / 500;
-		/*paddleLvertices[1]=0.5f;
-		glBindBuffer(GL_ARRAY_BUFFER, vboPL);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(paddleLvertices), paddleLvertices, GL_STATIC_DRAW);*/
+        int offset = glGetUniformLocation(ballProgram, "offset");
+        offsetX += (cos(angle) / 500.0f);
+        offsetY += (sin(angle) / 500.0f);
+        glUseProgram(ballProgram);
+        glUniform3f(offset, offsetX,offsetY,0.0f);
 		// Inputs
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
@@ -254,7 +253,7 @@ int main(int argc, char* argv[]) {
                         paddleLvertices[i*3+1]-=0.02f;
                     }
 				}
-                if(event.key.keysym.sym==SDLK_UP){
+                else if(event.key.keysym.sym==SDLK_UP){
                     for(int i=0;i<4;i++){
                         paddleRvertices[i*3+1]+=0.02f;
                     }
@@ -262,6 +261,11 @@ int main(int argc, char* argv[]) {
                     for(int i=0;i<4;i++){
                         paddleRvertices[i*3+1]-=0.02f;
                     }
+				}
+                else if(event.key.keysym.sym==SDLK_e){
+                    angle +=5.f;
+				}else if(event.key.keysym.sym==SDLK_a){
+                    angle -=5.f;
 				}
                 glBindBuffer(GL_ARRAY_BUFFER, vboPL);
 	            glBufferData(GL_ARRAY_BUFFER, sizeof(paddleLvertices), paddleLvertices, GL_STATIC_DRAW);
@@ -273,23 +277,23 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		if (ballXpos <= -0.8f) {
-			if (paddleLpos >= ballYpos && paddleLpos - 0.4f <= ballYpos) {
+		if (ballVertices[0] <= -0.8f) {
+			if (paddleLvertices[0] >= ballVertices[1] && paddleLvertices[0] - 0.4f <= ballVertices[1]) {
 				//bounce right
 			}
 			else{} //score
 			
 		}
-		if (ballXpos >= 0.75f) {
-			if (paddleRpos >= ballYpos && paddleRpos - 0.4f <= ballYpos) {
+		if (ballVertices[0] >= 0.75f) {
+			if (paddleRvertices[0]>= ballVertices[1] && paddleRvertices[0] - 0.4f <= ballVertices[1]) {
 				//bounce left
 			}
 			else{} //score
 		}
-		if (ballYpos <= -0.85f) {
+		if (ballVertices[1] <= -0.85f) {
 			//bounce up
 		}
-		if (ballYpos >= 0.9f) {
+		if (ballVertices[1] >= 0.9f) {
 			//bounce down
 		}
 
