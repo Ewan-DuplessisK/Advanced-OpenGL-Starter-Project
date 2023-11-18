@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
 	float paddleLpos = 0.2f;
 
 	float paddleLvertices[]={
-		-0.85f,paddleLpos,0.0f,
+		-0.85f,0.2f,0.0f,
 		-0.8f,0.2f,0.0f,
 		-0.85f,-0.2f,0.0f,
 		-0.8f,-0.2f,0.0f,
@@ -246,10 +246,27 @@ int main(int argc, char* argv[]) {
 				break;
 			case SDL_KEYDOWN:
 				if(event.key.keysym.sym==SDLK_z){
-
+                    for(int i=0;i<4;i++){
+                        paddleLvertices[i*3+1]+=0.02f;
+                    }
 				}else if(event.key.keysym.sym==SDLK_s){
-
+                    for(int i=0;i<4;i++){
+                        paddleLvertices[i*3+1]-=0.02f;
+                    }
 				}
+                if(event.key.keysym.sym==SDLK_UP){
+                    for(int i=0;i<4;i++){
+                        paddleRvertices[i*3+1]+=0.02f;
+                    }
+				}else if(event.key.keysym.sym==SDLK_DOWN){
+                    for(int i=0;i<4;i++){
+                        paddleRvertices[i*3+1]-=0.02f;
+                    }
+				}
+                glBindBuffer(GL_ARRAY_BUFFER, vboPL);
+	            glBufferData(GL_ARRAY_BUFFER, sizeof(paddleLvertices), paddleLvertices, GL_STATIC_DRAW);
+                glBindBuffer(GL_ARRAY_BUFFER, vboPR);
+	            glBufferData(GL_ARRAY_BUFFER, sizeof(paddleRvertices), paddleRvertices, GL_STATIC_DRAW);
 				break;
 			default:
 				break;
