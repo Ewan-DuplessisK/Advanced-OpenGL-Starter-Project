@@ -226,7 +226,7 @@ int main(int argc, char* argv[]) {
 
     float offsetX=0.0f;
     float offsetY=0.0f;
-    float angle=180.f;
+    float angle=M_PIf32;
 
 	bool isRunning = true;
 	while (isRunning) {
@@ -263,9 +263,9 @@ int main(int argc, char* argv[]) {
                     }
 				}
                 else if(event.key.keysym.sym==SDLK_e){
-                    angle +=5.f;
+                    angle +=M_2_PI;
 				}else if(event.key.keysym.sym==SDLK_a){
-                    angle -=5.f;
+                    angle -=M_2_PI;
 				}
                 glBindBuffer(GL_ARRAY_BUFFER, vboPL);
 	            glBufferData(GL_ARRAY_BUFFER, sizeof(paddleLvertices), paddleLvertices, GL_STATIC_DRAW);
