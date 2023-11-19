@@ -277,24 +277,26 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		if (ballVertices[0] <= -0.8f) {
-			if (paddleLvertices[0] >= ballVertices[1] && paddleLvertices[0] - 0.4f <= ballVertices[1]) {
-				//bounce right
+		if (offsetX <= -0.8f) {
+            angle = -angle;
+			if (paddleLvertices[1] >= offsetY && paddleLvertices[1] - 0.4f <= offsetY) {
+				angle = -angle;
 			}
 			else{} //score
 			
 		}
-		if (ballVertices[0] >= 0.75f) {
-			if (paddleRvertices[0]>= ballVertices[1] && paddleRvertices[0] - 0.4f <= ballVertices[1]) {
-				//bounce left
+		if (offsetX >= 0.75f) {
+            angle = -angle;
+			if (paddleRvertices[1]>= offsetY && paddleRvertices[1] - 0.4f <= offsetY) {
+				angle = -angle;
 			}
 			else{} //score
 		}
-		if (ballVertices[1] <= -0.85f) {
-			//bounce up
+		if (offsetY <= -0.85f) {
+			angle = -angle;
 		}
-		if (ballVertices[1] >= 0.9f) {
-			//bounce down
+		if (offsetY >= 0.9f) {
+			angle = -angle;
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
