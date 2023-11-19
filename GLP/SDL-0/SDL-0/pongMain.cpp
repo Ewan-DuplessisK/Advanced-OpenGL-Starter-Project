@@ -278,7 +278,6 @@ int main(int argc, char* argv[]) {
 		}
 
 		if (offsetX <= -0.8f) {
-            angle = -angle;
 			if (paddleLvertices[1] >= offsetY && paddleLvertices[1] - 0.4f <= offsetY) {
 				angle = -angle;
 			}
@@ -286,7 +285,6 @@ int main(int argc, char* argv[]) {
 			
 		}
 		if (offsetX >= 0.75f) {
-            angle = -angle;
 			if (paddleRvertices[1]>= offsetY && paddleRvertices[1] - 0.4f <= offsetY) {
 				angle = -angle;
 			}
