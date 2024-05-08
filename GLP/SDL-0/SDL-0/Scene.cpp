@@ -3,7 +3,8 @@
 #include "glew.h"
 
 Scene::Scene(std::string nameP) {
-	m_name = nameP; 
+	m_name = nameP;
+	LastTick = (float)SDL_GetTicks()/1000;
 	glGenBuffers(1, &m_vbo);
 }
 

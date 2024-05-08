@@ -99,6 +99,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ScreensaverScene.cpp" />
+    <ClCompile Include="SphereScene.cpp" />
     <ClCompile Include="TerrainTessellationScene.cpp" />
     <ClCompile Include="TessellationModesScene.cpp" />
     <ClCompile Include="TessellationScene.cpp" />
@@ -145,12 +146,15 @@
     <ClInclude Include="maths\Vector2.h" />
     <ClInclude Include="maths\Vector3.h" />
     <ClInclude Include="maths\Vector4.h" />
+    <ClInclude Include="Object3D.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManagement.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="Shape3D.h" />
     <ClInclude Include="Shapes2D.h" />
     <ClInclude Include="ScreensaverScene.h" />
+    <ClInclude Include="SphereScene.h" />
     <ClInclude Include="TerrainTessellationScene.h" />
     <ClInclude Include="TessellationModesScene.h" />
     <ClInclude Include="TessellationScene.h" />
@@ -159,7 +163,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shaders\cube.frag" />
+    <Content Include="Shaders\cube.tesc" />
+    <Content Include="Shaders\cube.tese" />
     <Content Include="Shaders\cube.vert" />
+    <Content Include="Shaders\cubeTess.frag" />
+    <Content Include="Shaders\cubeTess.vert" />
+    <Content Include="Shaders\sphere.frag" />
+    <Content Include="Shaders\sphere.vert" />
     <Content Include="Shaders\textureAnimVertex.shader" />
     <Content Include="Shaders\textureFragment.shader" />
     <Content Include="Shaders\textureVertex.shader" />

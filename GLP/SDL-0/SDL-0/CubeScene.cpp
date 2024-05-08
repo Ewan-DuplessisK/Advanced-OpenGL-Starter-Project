@@ -6,19 +6,23 @@
 
 CubeScene::CubeScene()
 {
-	
 }
 
 
 void CubeScene::LoadShaders() {
 	m_vertexShader.LoadFrom("cube.vert", VERTEX);
 	m_fragmentShader.LoadFrom("cube.frag", FRAGMENT);
+	m_tessVertexShader.LoadFrom("cubeTess.vert", VERTEX);
+	m_tessFragShader.LoadFrom("cubeTess.frag", FRAGMENT);
+	m_tessControlShader.LoadFrom("cube.tesc", TESSELLATION_CONTROL);
+	m_tessEvalShader.LoadFrom("cube.tese", TESSELLATION_EVALUATION);
 
 }
 
 void CubeScene::CreateShaderPrograms()
 {
 	m_Program.Compose({&m_vertexShader, &m_fragmentShader});
+	m_tessProgram.Compose({&m_tessVertexShader, &m_tessFragShader, &m_tessControlShader, &m_tessEvalShader});
 }
 
 void CubeScene::VerticeInformationSlicer()
@@ -30,6 +34,7 @@ void CubeScene::VerticeInformationSlicer()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	//glPatchParameteri(GL_PATCHES, 3);
 	delete [] verticeArray;
 }
 
@@ -102,7 +107,7 @@ void CubeScene::SetupScene()
 	glDepthFunc(GL_LEQUAL);
 
 	//Creating and loading the simple texture
-	Texture2D m_WallTexture = Texture2D();
+	m_WallTexture = Texture2D();
 	m_WallTexture.load("Textures/wall.png");
 	m_WallTexture.generate();
 	m_WallTexture.use();
@@ -135,12 +140,18 @@ void CubeScene::UpdateScene() {
 	m_Program.setMatrix4("mv_matrix", mv);
 	m_Program.setMatrix4("projection", projection);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	m_tessProgram.Use();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	mv = Matrix4::createTranslation(position + Vector3(0.5f,0,0));
 	mv = mv * rotation;
-	m_Program.setMatrix4("mv_matrix", mv);
+	//m_Program.setMatrix4("mv_matrix", mv);
 
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	m_tessProgram.setMatrix4("mv_matrix", mv);
+	m_tessProgram.setMatrix4("projection", projection);
+	m_tessProgram.setFloat("ratio", (sinusoidValue + 1) * 10);
+	glDrawArrays(GL_PATCHES, 0, 36);
 }
 
 

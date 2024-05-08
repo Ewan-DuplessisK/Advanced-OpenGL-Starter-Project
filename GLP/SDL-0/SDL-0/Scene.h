@@ -15,9 +15,12 @@ protected:
 	//Splits informations of the array into attributes
 	virtual void VerticeInformationSlicer() = 0;
 
+
 public:
 	Scene(std::string nameP = "Demo");
 	~Scene();
+
+	float LastTick;
 	
 	virtual void SetupScene() = 0;
 	virtual void UpdateScene() = 0;
