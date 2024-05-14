@@ -6,11 +6,16 @@ void SphereScene::LoadShaders()
 {
     m_vertexShader.LoadFrom("sphere.vert", VERTEX);
     m_fragmentShader.LoadFrom("sphere.frag", FRAGMENT);
+    m_tessControlShader.LoadFrom("tessellationControl.shader", TESSELLATION_CONTROL);
+    m_tessEvalShader.LoadFrom("tessellationEval.shader", TESSELLATION_EVALUATION);
 }
 
 void SphereScene::CreateShaderPrograms()
 {
-    m_Program.Compose({&m_vertexShader, &m_fragmentShader});
+    m_Program.Compose({& m_vertexShader, 
+        & m_fragmentShader,
+        & m_tessControlShader,
+        & m_tessEvalShader});
 }
 
 void SphereScene::VerticeInformationSlicer()
@@ -81,5 +86,6 @@ void SphereScene::UpdateScene()
     m_Program.setMatrix4("mv_matrix", m_mv);
     m_Program.setMatrix4("projection", m_projection);
     //Draw triangles in the order of the index array
-    glDrawElements(GL_TRIANGLES, m_indicies.size(), GL_UNSIGNED_INT, m_indicies.data());
+    glPatchParameteri(GL_PATCH_VERTICES,3);
+    glDrawElements(GL_PATCHES, m_indicies.size(), GL_UNSIGNED_INT, m_indicies.data());
 }
