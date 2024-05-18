@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="BeachScene.cpp" />
     <ClCompile Include="CubeScene.cpp" />
     <ClCompile Include="Engine\Assets.cpp" />
     <ClCompile Include="Engine\MeshObject.cpp" />
@@ -120,6 +121,7 @@
     <None Include="Shaders\terrainTessVertex.shader" />
     <None Include="Shaders\tessellationControl.shader" />
     <None Include="Shaders\tessellationEval.shader" />
+    <None Include="Shaders\tessellationEvalSphere.shader" />
     <None Include="Shaders\tessellationFragment.shader" />
     <None Include="Shaders\tessellationGeometry.shader" />
     <None Include="Shaders\tessellationVertex.shader" />
@@ -131,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="BeachScene.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CubeScene.h" />
     <ClInclude Include="Engine\Assets.h" />

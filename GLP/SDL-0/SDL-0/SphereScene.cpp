@@ -7,7 +7,7 @@ void SphereScene::LoadShaders()
     m_vertexShader.LoadFrom("sphere.vert", VERTEX);
     m_fragmentShader.LoadFrom("sphere.frag", FRAGMENT);
     m_tessControlShader.LoadFrom("tessellationControl.shader", TESSELLATION_CONTROL);
-    m_tessEvalShader.LoadFrom("tessellationEval.shader", TESSELLATION_EVALUATION);
+    m_tessEvalShader.LoadFrom("tessellationEvalSphere.shader", TESSELLATION_EVALUATION);
 }
 
 void SphereScene::CreateShaderPrograms()
