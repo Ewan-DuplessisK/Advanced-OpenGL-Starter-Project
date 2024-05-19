@@ -171,11 +171,13 @@
     <Content Include="Shaders\cube.vert" />
     <Content Include="Shaders\cubeTess.frag" />
     <Content Include="Shaders\cubeTess.vert" />
+    <Content Include="Shaders\sandTessEval.shader" />
     <Content Include="Shaders\sphere.frag" />
     <Content Include="Shaders\sphere.vert" />
     <Content Include="Shaders\textureAnimVertex.shader" />
     <Content Include="Shaders\textureFragment.shader" />
     <Content Include="Shaders\textureVertex.shader" />
+    <Content Include="Shaders\waterTessEval.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	Window window(540.0f, 540.0f, Color(0,0,0.25f));
 
 	//Use a SceneID (see SceneManagement.h) to quickly setup the correct scene for the build!
-	Scene* scene = SceneSelector(SPHERE);
+	Scene* scene = SceneSelector(BEACH);
 	if (scene == nullptr) return 1; //Scene doesn't exist yet
 
 	//Preparing shaders, shader programs, vao and vbo
