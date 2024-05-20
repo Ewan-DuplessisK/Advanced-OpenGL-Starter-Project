@@ -2,12 +2,13 @@
 
 layout(quads, fractional_odd_spacing) in;
 
-layout(binding = 2) uniform sampler2D tex_displacement;
+layout(binding = 3) uniform sampler2D tex_displacement;
 
 uniform mat4 mv_matrix;
 uniform mat4 proj_matrix;
 uniform mat4 mvp_matrix;
 uniform float dmap_depth;
+uniform float time;
 
 in TCS_OUT
 {
@@ -38,8 +39,9 @@ void main(void)
     vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
     vec4 p = mix(p2, p1, gl_TessCoord.y);
     p.y += texture(tex_displacement, tc).r * dmap_depth;
-    p.y+= pow(p.x/20,3)+0.6;
-    if(p.y>1)p.y=1;
+    p.y += sin(p.x+time);
+    //p.y+= pow(p.x/20,3)+0.6;
+    //if(p.y>1)p.y=1;
 
     gl_Position = mvp_matrix * p;
     tes_out.tc = tc;

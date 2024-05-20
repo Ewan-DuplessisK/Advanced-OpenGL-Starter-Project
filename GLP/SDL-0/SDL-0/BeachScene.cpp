@@ -99,6 +99,7 @@ void BeachScene::UpdateScene(){
 	m_waterProgram.setMatrix4("mvp_matrix", proj * view);
 	m_waterProgram.setFloat("dmap_depth", isDisplacementEnabled ? dmapDepth : 0.0f);
 	m_waterProgram.setFloat("enable_fog", isFogEnabled ? 1.0f : 0.0f);
+	m_waterProgram.setFloat("time",totalTime);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
