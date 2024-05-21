@@ -9,6 +9,7 @@ uniform mat4 proj_matrix;
 uniform mat4 mvp_matrix;
 uniform float dmap_depth;
 uniform float time;
+out float posx;
 
 in TCS_OUT
 {
@@ -39,12 +40,13 @@ void main(void)
     vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
     vec4 p = mix(p2, p1, gl_TessCoord.y);
     p.y += texture(tex_displacement, tc).r * dmap_depth;
-    p.y += sin(p.x+time);
+    p.y += sin(p.x+time)*(pow(p.x/30,3)+0.2);
     //p.y+= pow(p.x/20,3)+0.6;
     //if(p.y>1)p.y=1;
 
     gl_Position = mvp_matrix * p;
     tes_out.tc = tc;
+    posx = p.x;
     /*
 
         // Optional: Compute eye position for fog

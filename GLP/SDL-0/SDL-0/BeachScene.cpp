@@ -46,6 +46,8 @@ void BeachScene::SetupScene(){
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glPatchParameteri(GL_PATCH_VERTICES, 4);
 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable( GL_BLEND );
 	glEnable(GL_CULL_FACE);
 	//TEXTURES
 	glActiveTexture(GL_TEXTURE1);
